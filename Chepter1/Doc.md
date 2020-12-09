@@ -159,7 +159,7 @@ puts string
 >・[The Ruby Map Method](https://www.rubyguides.com/2018/10/ruby-map-method/)
 
 次は「hash.each { |k,v| string << "#{k} is Key, #{v} is Value¥n" }」の部分を見ましょう。
->「.each」の意味は変数陣列の要素を一つつずを取る意味です。
+>「[.each](https://apidock.com/ruby/v2_5_5/Enumerator/each)」の意味は変数陣列の要素を一つつずを取る意味です。
 >
 >波括弧の中に「|k,v|」の部分を見てください。
 >ここの「|k,v|」は二つの変数をラムダ式で宣言する意味です。
@@ -167,6 +167,7 @@ puts string
 >・最初の「k」は「Key」の変数名として宣言しています。
 >・次の「v」は「Value」の変数名として宣言しています。
 
+もっと勉強しましょう → [each_with_index](https://apidock.com/ruby/v2_5_5/Enumerator/each_with_index)
 ### ストリングの中にクラスを挟むまで可能!?
 >Q：ストリングの中にこの前話した「#{}」の方法で[ラムダ式(nameless function)](https://ja.wikipedia.org/wiki/%E7%84%A1%E5%90%8D%E9%96%A2%E6%95%B0)のクラスを挟むことが可能でしょうか？
 
