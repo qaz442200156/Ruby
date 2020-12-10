@@ -188,3 +188,167 @@ InstantClass.new.bar
 ```
 
 ◆練習:stringworld_03.rb
+
+### printf風で変数をストリングに代入する
+Rubyのプログラミング言語はC言語とPython言語にある「printf」と似ているストリングの出力方法もできます。
+```
+template = 'This is %s'
+puts template % 'apple' # => "This is apple"
+
+puts 'To 2 decimal places: %.2f' % Math::PI
+puts 'To 2 decimal places: %.5f' % Math::PI
+puts 'To 2 decimal places: %d' % Math::PI
+puts 'To 2 decimal places: %5d' % Math::PI
+```
+◆練習:stringworld_04.rb
+
+まず、ストリング後に続けて記された「％」を見てください。
+>template 「　%　」 'apple' ここの「％」です。
+>
+>※左側通称「テンプレート文章」、右側通称「代入用の値」
+
+Rubyのプログラミング言語で「printf風」で変数をストリングに代入する時、まず二つの条件を足さないといけないです、他のプログラミングも大体同じ状況です。
+ - 条件その1 : フォーマット専用の「テンプレートの文章」の準備
+ - 条件その2 : フォーマットする時必要な「代入用の値」
+
+以上この二つの条件を満たすと、文章の完成フォーマットすることができます。
+
+もっと勉強しましょう → [フォーマットとは](http://e-words.jp/w/%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88.html)
+
+もっと勉強しましょう → [C言語のフォ-マット式一覧](https://www.k-cube.co.jp/wakaba/server/format.html)
+
+### Embedded Ruby(ERB)の方法で変数をストリングに代入する
+Embedded Ruby(ERB)はRuby on Rails(RoRR)でWebサイドを開発する時、良く使っているテンプレートの表現です。
+
+ERBのAPIを使う時、先頭のところで「[require](https://qiita.com/Rudiments/items/6c999b0ec5481fabf6a2)」の指定のAPIの使用請求を書かないと対応のAPIが使えないです。
+```
+require 'erb'
+```
+>「require」とは、要求、請求として理解すれば理解しやすくなったかな、つまり、あなたは他の力を借りる時の意味です。
+>
+>Q:「力を借りる」って、どういう意味なのか？
+>
+>A:プログラミング言語の世界中、多くの言語の開発者がいて、開発者から作った使いやすい重宝な関数や機能（総称:[ライブラリ](http://e-words.jp/w/%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA.html)）を借りて使う時のキーワードです。
+
+Ruby以外のプログラミング言語で、言語ごとにAPIを借りて使う時専用のキーワールドも違います。例えば：「Import」、「Using」等等。
+
+まず簡単の範例を見ましょう
+```
+require 'erb'
+template = ERB.new %q{I Got <%= item %>!}
+```
+ERBの使い方について説明します。まずはテンプレート文章の作成部分を見ましょう。
+>　ERB.new %q{I Got <%= item %>!}　# これは今回のテンプレート文章です。
+
+>ERB.new %q{} # 空っぽの時はこの感じです。
+
+>{I Got <%= item %>!}　波括弧中にある文章は今回のテンプレートの文章です。
+
+>そして！！　入れ替え用の変数の定義方法は「<%= item %>」です！
+
+ERBのテンプレートの文章を書く時、変数とのつなぎ方法は「<%= 変数名 %>」です。
+
+このような形でテンプレートを書き上げた後、指定の「合成/
+更新」の関数を呼び出すとテンプレート文章中にの入り換え用の変数は自動的にその変数の値に切り替える。
+
+```
+require 'erb'
+template = ERB.new %q{I Got <%= item %>!}
+item = "Orange"　# => 入り換え用の変数は値を付与する
+puts template.result　# =>　合成/更新の関数を利用する
+item = "Box"　　　# =>　また、値を変更して
+puts template.result　# =>　もう一度合成/更新の関数を利用する
+```
+ERBで作ったテンプレートは「resultで合成/更新」ができますが、この「result」の方法は自動的に出力がしません。もし、「puts」を頼らずに直接「合成/更新して出力」ことが欲しいの場合は「run」の関数を使うと望むの結果が出せます。
+
+### ちょっと難しいEmbedded Ruby(ERB)の範例
+```
+require 'erb'
+template = %q{
+    <% if datas.empty? %>
+        Oops Not Got any datas
+    <% else %>
+        <% datas.each do |name, number| %>
+            DataName: <%= name %> Number: <%= number%>
+        <% end %>
+    <% end %>
+}.gsub(/^\s+/,'')
+
+template = ERB.new(template, nil, '<>')
+
+datas = [
+            ["Andy","112255-554"],
+            ["Mery","333345-664"],
+        ]
+
+template.run
+datas = []
+puts ' result ? ======'
+template.result
+puts ' out put ?======'
+puts template.result
+template.run
+```
+この範例について、二つのパーツに分解して分けて見ましょう
+- その1 テンプレートの文章
+```
+template = %q{
+    <% if datas.empty? %>
+        Oops Not Got any datas
+    <% else %>
+        <% datas.each do |name, number| %>
+            DataName: <%= name %> Number: <%= number%>
+        <% end %>
+    <% end %>
+}.gsub(/^\s+/,'')
+```
+この文章をもっとわかりやすいために全部の「<% %>」を外しましょう
+```
+template = %q{
+     if datas.empty? 
+        Oops Not Got any datas
+     else 
+         datas.each do |name, number| 
+            DataName:  [変数　name]  Number: [変数　number]
+         end 
+     end 
+}.gsub(/^\s+/,'')
+```
+もし、過去Rubyを書いたことがある方は多分もう既に現状を把握したと思いますが、もう一度復習しましょう！
+Ruby言語は普段関数や判断式を書く時最後は必ず「end」で関数や判断式の終了を記する。
+
+下の画像をじっくり見ると三つのブロックがあります。
+- 全体一番デカイ「オレンジ色のブロック」は「ifとelse」のメインブロックである。
+- ifが成立する時入るの「黄色ブロック」、ここは条件が満ちる時やるべきの処理です。
+- ifが不成立時入るの「青いブロック」、このブロックは条件が満たない時対応するべきの処理です。
+![ERB_02](Image/ERB_02.png)
+>「.gsub(/^\s+/,'')」の部分に関して説明します。
+[String#gsub](https://apidock.com/ruby/String/gsub)はストリング専用のAPIの「Grep & Replace」の意味です。簡単でいうと指定のストリングで決めた文字を取得して、指定のストリングで書き換えることです。
+>
+>gsub(選定文字,書き換えの文字)
+>
+>今回この部分は「正規表現」というの方法で複数の空白を取って、何もない文字を書き換えるです。その「複数の空白を取る」の正規表現は「/^\s+/」です。ここの「s+」の意味は「複数の空白」の意味である。
+
+⭐️⭐️⭐️正規表現の汎用性はRubyだけではなくて、他のプログラミング言語にも使えるよ。
+「正規表現」って主に資料を処理する時、簡単な「正規表現」の文字フィルターコードを書いて、そのフィルターを使って複雑な資料中から欲しいデータを簡単に引き出すことができます。
+
+その部分は一番重要な知識と技術と思っています。特にRubyで膨大の資料や自動化処理をする時、もし自分が「正規表現」の技術が持っていたら、もっとシンプルで効率なコードを書けれるから、時間を節約するために是非覚えてみて下さい。
+
+もっと勉強しましょう → [正規表現(regular expression)とは](http://e-words.jp/w/%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE.html)
+
+もっと勉強しましょう → [正規表現](https://qiita.com/jnchito/items/893c887fbf19e17d3ff9)
+
+- その2 テンプレートの合成と出力
+```
+# =>　以上は　その1　の省略...
+
+template.run　# => テンプレートの合成と出力
+datas = []　　# => 書き換え用の変数の値変化
+puts ' result ? ======'　
+template.result　# => テンプレートの合成のみ、putsを利用しないと出力がしません
+puts ' out put ?======'
+puts template.result # => putsを使って通常で出力する
+template.run　# => テンプレートの合成と出力
+```
+
+◆練習:stringworld_04.rb
