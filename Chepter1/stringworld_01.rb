@@ -1,17 +1,20 @@
-AA="My first string"
+aa="My first string"
 puts '======== API Slice ========'
-puts AA.slice(3,5)
+puts aa.slice(3,5)
 puts '======== API upcase ========'
-AA.upcase
-puts AA
+puts aa.upcase
+aa.upcase
+puts aa
+aa.upcase!
+puts aa
 puts '======== API empty? ========'
-BB =""
-puts BB.empty?
-BB = "ABC"
-puts BB.empty?
+bb =""
+puts bb.empty?
+bb = "ABC"
+puts bb.empty?
 puts '======== API include? ========'
-AA="String"        # => "String"
-puts AA.include? 'A'    # => FALSE
-puts AA.include? 'Str'  # => TRUE
-puts AA.include? 'tri'  # => TRUE
-puts AA.include? 'n'    # => TRUE
+aa="String"        # => "String"
+puts aa.include? 'A'    # => FALSE
+puts aa.include? 'Str'  # => TRUE
+puts aa.include? 'tri'  # => TRUE
+puts aa.include? 'n'    # => TRUE

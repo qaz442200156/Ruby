@@ -1,4 +1,4 @@
-puts '======== Printf Style ========'
+puts '======== printf Style ========'
 template = 'This is %s'
 puts template % 'apple' # => "This is apple"
 

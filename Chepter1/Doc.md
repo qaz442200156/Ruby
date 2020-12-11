@@ -26,8 +26,8 @@ AAA = 1 # => グローバル変数
 ---
 ストリングをスライスする時は、下記のAPIを使えばストリングの切り分けることができます。
 ```
-AA="My first string"
-puts AA.slice(3,5) # => 「first」
+aa="My first string"
+puts aa.slice(3,5) # => 「first」
 ```
 ◆練習:stringworld_01.rb
 
@@ -61,8 +61,12 @@ String#sliceに関して詳しいAPI内容はこちらへ → [String#slice](htt
 ストリングは大文字に変更するAPIです。
 ```
 aa="My string"
-aa.upcase # => "MY STRING"
+aa.upcase # => "My string"
+puts aa.upcase # => "MY STRING"
+aa.upcase! # => "MY STRING"
 ```
+>行尾で「！」を付けると変数の直接転換することができます。
+
 ◆練習:stringworld_01.rb
 
 
@@ -332,7 +336,7 @@ Ruby言語は普段関数や判断式を書く時最後は必ず「end」で関�
 ⭐️⭐️⭐️正規表現の汎用性はRubyだけではなくて、他のプログラミング言語にも使えるよ。
 「正規表現」って主に資料を処理する時、簡単な「正規表現」の文字フィルターコードを書いて、そのフィルターを使って複雑な資料中から欲しいデータを簡単に引き出すことができます。
 
-その部分は一番重要な知識と技術と思っています。特にRubyで膨大の資料や自動化処理をする時、もし自分が「正規表現」の技術が持っていたら、もっとシンプルで効率なコードを書けれるから、時間を節約するために是非覚えてみて下さい。
+その部分は一番重要な知識や技術と思っています。特にRubyで膨大の資料や自動化処理をする時、もし自分が「正規表現」の技術が持っていたら、もっとシンプルで効率なコードを書けれるから、時間を節約するために是非覚えてみて下さい。
 
 もっと勉強しましょう → [正規表現(regular expression)とは](http://e-words.jp/w/%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE.html)
 
@@ -352,3 +356,32 @@ template.run　# => テンプレートの合成と出力
 ```
 
 ◆練習:stringworld_04.rb
+
+### ストリングのリバース(reverse)
+もし、ストリングの中に文字または、データの順序が間違え時はどうするべきでしょうかな？
+Rubyはちょうど文字をリバースのAPIが存在しています。そのAPIは「reverse」です。
+```
+s = ".sdrawkcab si gnirts sihT"
+s.reverse  # => ".sdrawkcab si gnirts sihT"
+s.reverse! # => "This string is backwards."
+puts s
+```
+じっくり見ると「reverse」って、単純でストリングを転倒する見えますが、下記のような状況が対応できるか？
+```
+s = "order. wrong the in are words These"
+```
+上ような単語ごとにがあってるが、順序が間違えた状況でも対応出来ますよ。この時は「正規表現」の出番だ。
+```
+s = "order. wrong the in are words These"
+puts s.split(/(\s+)/).reverse!.join('')
+puts s.split(/(\b/)/).reverse!.join('')
+```
+Rubyの「reverse」はストリングだけ使えるではなくて、陣列にもリバース出来ます。
+
+```
+s = ".wrong are words These"
+puts s.split(/(\s+)/).to_s # =>[".wrong", " ", "are", " ", "words", " ", "These"]
+puts s.split(/\b/).to_s # =>[".", "wrong", " ", "are", " ", "words", " ", "These"]
+```
+>(/(\s+)/) の意味は連続の空白を選択する意味です
+>(/\b/) の意味は単語の境界です

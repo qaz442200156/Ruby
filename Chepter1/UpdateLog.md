@@ -17,3 +17,9 @@
     - 「ERB」で変数をストリングに代入する
     - 「正規表現」の説明を追加
     - 「String#gsub」の使い方
+- 2020/12/11
+  - 内容修正
+    - stringworld_01.rb内容を修正
+  - 内容追加
+    - String#reverseの説明
+    - Array#reverseの説明
