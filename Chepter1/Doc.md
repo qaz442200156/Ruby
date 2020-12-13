@@ -383,5 +383,141 @@ s = ".wrong are words These"
 puts s.split(/(\s+)/).to_s # =>[".wrong", " ", "are", " ", "words", " ", "These"]
 puts s.split(/\b/).to_s # =>[".", "wrong", " ", "are", " ", "words", " ", "These"]
 ```
+◆練習:stringworld_05.rb
+
 >(/(\s+)/) の意味は連続の空白を選択する意味です
 >(/\b/) の意味は単語の境界です
+
+##  ASCII(American Standard Code for Information Interchange)
+---
+ASCIIとは、アルファベットや数字、記号などを収録した文字コードの一つ。最も基本的な文字コードとして世界的に普及しており、他の多くの文字コードがASCIIの拡張になるよう実装されている。文字を7ビットの値（0～127）で表し、128文字が収録されている。
+
+>ASCIIでは1文字を7ビットで表すが、現代のコンピュータのほとんどはデータの基本的な管理単位が1バイト（8ビット）であるため、実際には1文字を8ビットで表している。
+
+ちなみに、日常でテキストエディターで文章を書く時もASCIIやUTF-8とか関係がありますよ。自分のPCの環境でシステム言語によって、テキストファイルを保存する時、その「Encode」の方法も違うので、ぐれぐれも注意して下さい。
+
+>例えば：日本人の田中さんが日本語の仕様書を書きました。
+そして、台湾人の李さんが田中さんからもらったファイルを開いたら、ファイルの内容を見ると読めない呪文ような内容になった状況です。
+>
+>◆その問題の原因は、両方普段の使っているシステムの[エンコード(Encode)](http://e-words.jp/w/%E3%82%A8%E3%83%B3%E3%82%B3%E3%83%BC%E3%83%89.html)の方法が違うから、ファイルを保存する時やファイルを開ける時、個別が違うEncodeで同じファイルの操作をしたから。
+>
+>■問題が発生した原因：田中さんのシステムエンコードは多分「Shift-JIS」を利用している、李さんの環境は多分「Big-5」や「UTF-8」を利用している可能性が高いです。
+>
+>★田中さんと李さんがあった問題の解決方法はこちらへ → [コマンドプロンプトでUTF8の文字コードに対応する方法](https://qiita.com/tukapai/items/50d1ede453b9961cca24)
+
+> Windowsのコンソールで　コマンドラインの中に「chcp」を入力すると現在システムを利用しているエンコードのタイプを確認することが出来ます。
+> そして、システムエンコードを変換する時は「chcp 指定のエンコード番号」で指定のエンコードを変換することが出来ます。
+
+もっと勉強しましょう → [エンコード(encode)](http://e-words.jp/w/%E3%82%A8%E3%83%B3%E3%82%B3%E3%83%BC%E3%83%89.html)
+
+もっと勉強しましょう → [ASCII](http://e-words.jp/w/ASCII.html)
+
+### ストリングの中に見えない文字
+プログラミングの世界中ストリングで実は見えない文字が存在している。でも、文章を読める僕らだちはこの細やかな部分がぼぼ気を使っていませんでした。普段良く使っている見えない文字は下記で記されています。
+```
+puts "Sound system bell:\a"
+puts "BS:12345 One BS:1234\b5 Two BS:123\x08\x0845 Two BS:123\x084\x085"
+puts "FF:Hello\fWorld\f"
+puts "LF:Line1\nLine2\n\nLine3"
+puts "CR:\rHelloWorld"
+puts "HT:\tOne Tab.\t\tTwo tabs."
+puts "VT:\vOne Vertical tab.\v\vTwo Vertical tabs."
+```
+◆練習:stringworld_06.rb
+
+Ruby言語はASCIIの表現が直接でストリングで利用することが可能です。下記の本例は交換性の検証です。
+```
+"\a" == "\x07" # => True # ASCII 0x07 = BEL (Sound system bell)
+"\b" == "\x08" # => True # ASCII 0x08 = BS(Backspace)
+"\e" == "\x1b" # => True # ASCII 0x1b = ESC(Escape)
+"\f" == "\x0c" # => True # ASCII 0x0c = FF(Form feed)
+"\n" == "\x0a" # => True # ASCII 0x0a = LF(Newline/line feed)
+"\r" == "\x0d" # => True # ASCII 0x0d = CR(Carriage return)
+"\t" == "\x09" # => True # ASCII 0x09 = HT(Tab/horizontal tab)
+"\v" == "\x0b" # => True # ASCII 0x0b = VT(Vertical tab)
+```
+上の範例で一つこどが分かれるのは、Ruby言語は直接[バイナリ(2進数)](http://e-words.jp/w/%E3%83%90%E3%82%A4%E3%83%8A%E3%83%AA.html)のコード読める文字に変換することが出来ます。
+```
+puts "\x10\x11\xfe\xff"     # => "\020\021\376\377"
+puts "\x48\145\x6c\157\x0a" # => "Hello\n"
+```
+
+◆練習:stringworld_06.rb
+
+### ストリングと％記法
+Ruby言語でダブルクォーテーションマークとシングルクォーテーションマークの差異が存在しています。そして、Ruby言語でストリングを作る時、とくつの方法が存在している。例えば「””」、「''」、「%{}」、「％Q{}」、「%q」五つの方法があって、でも全部はストリングを作れるが方法ごとに差別が存在しています。
+> 「””」「%{}」「%Q{}」この三つの方法は同じです。
+> 「''」「%q{}」この二つの方法は同じです
+```
+puts "food\tbar"    # => food   bar
+puts %{food\tbar}   # => food   bar
+puts %Q{food\tbar}  # => food   bar
+
+puts 'food\tbar'    # => food\tbar
+puts %q{food\tbar}  # => food\tbar
+```
+[[Ruby]%記法について](https://qiita.com/ren0826jam/items/01045a1cf07cce9ed5de)
+
+◆練習:stringworld_07.rb
+### ストリングとシンボル(Symbol)
+>Q:普段プログラミングしている時、ストリングを使うだけだわなくてストリングタイプじゃない変数、又は陣列なとの変数がある時、ストリングに転じることが出来ますか？
+
+>A:可能です。
+この要求がある時、「[Symbol#to_s](https://apidock.com/ruby/BigDecimal/to_s)」又は「[Symbol#id2name](https://apidock.com/ruby/Symbol/id2name)」のAPIを使ったら、指定の変数をストリングに変化することが出来ます。
+
+```
+puts :a_symbol.to_s
+puts :AnotherSymbol.id2name
+aa = 123456
+puts aa.to_s
+bb = [1,2,3]
+puts bb
+puts bb.to_s
+```
+◆練習:stringworld_07.rb
+### シンボル
+Ruby「シンボル」とは任意の文字列と一対一に対応するオブジェクトです。
+下記に範例をみながら説明をします。
+```
+puts "string".object_id # => メモリを利用して新しい物を作成する、使い切れたら捨てる
+puts "string".object_id # => メモリを利用して新しい物を作成する、使い切れたら捨てる
+puts :symbol.object_id  # => メモリを確保してしてなシンボルの物をしばらく保存する
+puts :symbol.object_id  # => 同じシンボルを利用する時、先メモリ中に保存したシンボルを利用する
+```
+プログラミングの世界で、ことを定義すると伴って必ず一つのことも発生します。それは、「メモリを利用する」ことです。とういう意味だろう。
+>例えは、授業で「先生が何かが話しています」。聞き手の貴方はその「話した内容を覚える」ことである。
+>
+>ここの「先生が何かが話しています」は「インプット」の意味です。
+>ここの「話した内容を覚える」は「記憶の作成」の意味です。
+>
+>コンピューターは人間の操作を記録して、必要な時この前操作した内容をすぐ再現できるようために「操作」を「記憶」に保存することが常にやっています。その「記憶」は「メモリ」であります。
+
+シンボルは指定の文字をユニークな意味に付与する意味である。
+そのシンボルになった文字はプログラミングが実行されている間にシンボルとして意味がある文字はずっと同じのことを指している。
+
+### シンボルの内容とオブジェクトの認識番号
+
+そして、どうやってシンボルの内容を確認したい場合は「[String#intern](https://apidock.com/ruby/String/intern)」で使ったらシンボルの内容を確認することが出来ます。
+
+内容の確認方法がわかりました上で、定義した物はちゃんと同じ物かどうかの認識方法にも一緒に覚えましょう。その確認方法は「[Object#object_id](https://apidock.com/ruby/Object/object_id)」です。
+
+```
+puts :dodecahedron.object_id # => 1056668
+symbol_name = "hello"
+puts symbol_name.intern
+puts symbol_name.intern.object_id
+
+symbol_name = "dodecahedron"
+puts symbol_name.intern  # => :dodecahedron
+puts symbol_name.intern.object_id  # => 1056668
+```
+
+◆練習:stringworld_07.rb
+
+もっと勉強しましょう → [Rubyのシンボルトとは](https://qiita.com/tmasuyama/items/450c285464c1fea298cb)
+
+>Q:ストリングとシンボルは実戦で使うタイミングがいつかな？
+>
+>A:優秀なRbuy専門家Jim Weirichからのアドバイスは
+> - もし、ストリング内容は「順序」が重要だとすると、ストリングを使う方がお勧めの選択でした。
+> - もし、 ストリング内容は「識別」が重要だとすると、シンボルを使う方がお勧めの選択でした。
