@@ -25,6 +25,12 @@ puts '======== scan ========'
 french = "\xc3\xa7a va"
 puts '======== each_byte ========'
 french.each_byte { |c| puts c}
+puts '======== each_byte to chr and check encoding ========'
+french.each_byte { |c| puts "#{c.chr} => #{c.chr.encoding}"}
+puts '======== each_byte Pack and force_encoding(\'utf-8\')========'
+newfrench = french.each_byte.to_a
+puts newfrench.pack('C*').force_encoding('utf-8')
+
 puts '======== scan(/./) ========'
 french.scan(/./) { |c| puts c}
 puts '======== Set Endcoding And Do scan(/./) ========'

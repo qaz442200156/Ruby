@@ -40,3 +40,10 @@
     - ストリングの処理「String#each_byte」
     - ストリングの処理「String#each_line」
     - ストリングの処理「String#scan」
+- 2020/12/15
+  - 内容修正
+    - stringworld_08.rb ASCII-8BIT To UTF-8 by array#pack and force_encoding('utf-8')
+  - 内容更新
+    - ストリングの処理「String」に自分の関数を追加する
+    - ストリングの処理「自分の関数で単語を数える」
+    - ストリングの処理「正規表現を使って単語を数える」

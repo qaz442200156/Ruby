@@ -35,7 +35,7 @@ puts aa.slice(3,5) # => 「first」
 コードの視点は下記のように運行しています。
 ``` 
 ”My first string”.slice(3,5)
-↓ ストリングからChar陣列に変換する
+↓ ストリングからChar配列に変換する
 {'M','y',' ','f','i','r','s','t',' ','s','t','r','i','n','g'}
 要素1　= 'M', 要素2 = 'y', 要素3 = ' '.....
 ↓ slice(3,5)
@@ -45,11 +45,11 @@ puts aa.slice(3,5) # => 「first」
 ```
 ![String#slice](./Image/slice.jpg)
 「AA.slice(代入値1,代入値2)」について説明をします。
->スライス最初代入の値1は「3」です。その「3」の意味は"My first string"が「スライス」の方法を利用して、変数AAのストリングはCharの陣列として、そのchar陣列の中にの第3個目の値からスライスを行う意味です。
+>スライス最初代入の値1は「3」です。その「3」の意味は"My first string"が「スライス」の方法を利用して、変数AAのストリングはCharの配列として、そのchar配列の中にの第3個目の値からスライスを行う意味です。
 
 >スライスの二番目の代入値2の「5」は、幾つの要素を取るの意味であります。今回は五つ要素を取ります。
 
->補足：「ストリングからChar陣列に変換する」意味とは「"ABC"一つの単位」から複数の「{'A','B','C'}」のChar陣列になる意味である。
+>補足：「ストリングからChar配列に変換する」意味とは「"ABC"一つの単位」から複数の「{'A','B','C'}」のChar配列になる意味である。
 
 「AA.slice（start index,select chars from index）」AA.slice(開始場所, 開始場所から幾つの文字を取得する)
 
@@ -163,7 +163,7 @@ puts string
 >・[The Ruby Map Method](https://www.rubyguides.com/2018/10/ruby-map-method/)
 
 次は「hash.each { |k,v| string << "#{k} is Key, #{v} is Value¥n" }」の部分を見ましょう。
->「[.each](https://apidock.com/ruby/v2_5_5/Enumerator/each)」の意味は変数陣列の要素を一つつずを取る意味です。
+>「[.each](https://apidock.com/ruby/v2_5_5/Enumerator/each)」の意味は変数配列の要素を一つつずを取る意味です。
 >
 >波括弧の中に「|k,v|」の部分を見てください。
 >ここの「|k,v|」は二つの変数をラムダ式で宣言する意味です。
@@ -376,7 +376,7 @@ s = "order. wrong the in are words These"
 puts s.split(/(\s+)/).reverse!.join('')
 puts s.split(/(\b/)/).reverse!.join('')
 ```
-Rubyの「reverse」はストリングだけ使えるではなくて、陣列にもリバース出来ます。
+Rubyの「reverse」はストリングだけ使えるではなくて、配列にもリバース出来ます。
 
 ```
 s = ".wrong are words These"
@@ -460,7 +460,7 @@ puts %q{food\tbar}  # => food\tbar
 
 ◆練習:stringworld_07.rb
 ### ストリングとシンボル(Symbol)
->Q:普段プログラミングしている時、ストリングを使うだけだわなくてストリングタイプじゃない変数、又は陣列なとの変数がある時、ストリングに転じることが出来ますか？
+>Q:普段プログラミングしている時、ストリングを使うだけだわなくてストリングタイプじゃない変数、又は配列なとの変数がある時、ストリングに転じることが出来ますか？
 
 >A:可能です。
 この要求がある時、「[Symbol#to_s](https://apidock.com/ruby/BigDecimal/to_s)」又は「[Symbol#id2name](https://apidock.com/ruby/Symbol/id2name)」のAPIを使ったら、指定の変数をストリングに変化することが出来ます。
@@ -548,7 +548,7 @@ puts '======== each_char == split('') 3 ========'
 ◆練習:stringworld_08.rb
 
 ### ストリングの処理 String#each_line
-ようやく資料やデータ処理で常に使っているAPIが現れた！個人はRubyでテキストファイルを読んでデータを処理する時、良く使っているAPIは「[String#each_line](https://apidock.com/ruby/String/each_line)」です。長い文章又はデータを読んで自動的に改行を認識して一行分のデータをストリングの陣列に変換する時、良くこのAPIを使います。
+ようやく資料やデータ処理で常に使っているAPIが現れた！個人はRubyでテキストファイルを読んでデータを処理する時、良く使っているAPIは「[String#each_line](https://apidock.com/ruby/String/each_line)」です。長い文章又はデータを読んで自動的に改行を認識して一行分のデータをストリングの配列に変換する時、良くこのAPIを使います。
 ```
 puts '======== each_line ========'
 lines = []
@@ -578,6 +578,112 @@ french.scan(/./u) { |c| puts c} # => フランス語「ça va」
 ```
 ◆練習:stringworld_08.rb
 
+>「[Array#pack](https://rubyapi.org/2.6/o/array?fbclid=IwAR29aHmwGubERV-aPwCxbvyp916zxzFpSOKmErqlrFu6AlsvsDf-CkrMF6I#method-i-pack)」と「[Comment#force_encode('utf-8')](https://apidock.com/ruby/RDoc/Comment/force_encoding)」
+>
+>Byteから正しいストリングに変換する方法について説明します。
+>french.each_byte { |c| puts c}
+>
+> \# => 出力結果は 195 167 97 32 118 97
+>
+>french.each_byte { |c| puts "#{c.chr} => #{c.chr.encoding}"}
+>
+> \# 出力結果は =>� => ASCII-8BIT, � => ASCII-8BIT, a => US-ASCII
+>
+> \# 出力結果は =>  => US-ASCII, v => US-ASCII, a => US-ASCII
+
+>★ここで正しい表示出来ない文字の「エンコード」は「ASCII-8BIT」になっているから。そしてASCIIの数字は「chr」で「エンコード」変換する時、変換できる数字は127までので、127以上の数字が識別できない。
+
+>その原因で、まずByteを数字配列に変換して
+>
+>newfrench = french.each_byte.to_a
+>
+>そして、「Array#pack」を使って配列の要素を再「エンコード」して、最後は強制「Comment#force_encode」指定の「utf-8」にエンコードする
+>
+>puts newfrench.pack('C*').force_encoding('utf-8')
+
+>pack('C') # =>FROM「Integer」Convert To「8-bit unsigned (unsigned char)」
+>pack('C*') # => ALL Array Elements will use「Integer」Convert To「8-bit unsigned (unsigned char)」
+
 忘れたらこちらへ → [正規表現(regular expression)とは](http://e-words.jp/w/%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE.html)
 
 忘れたらこちらへ → [正規表現](https://qiita.com/jnchito/items/893c887fbf19e17d3ff9)
+
+### ストリングを分解する
+この前幾つストリングから文字を一つつず出力する方法が紹介しました。この節はストリングに単語を出力する方法を話します。
+>データ処理する時自分の考え通りで欲しいデータだけ取得するのはとても重要です。
+
+まず、貴方にとって「単語」とは何ですか、その構成はどの感じですか、空白は必要ですか、等等、データの構成はデータごとに違うから。
+
+新しいデータが来たから、綺麗に読みやすくて使いやすい「僕のデータ」に変換するまでの過程がちょっと辛いかもしれないが、実際にパズルと同じでとても面白いですよ。
+
+```
+# =>　ストリングにカスタマイズ関数を追加する　word_count（単語を数える関数）
+class String # => ストリングのメインClassは「String」です
+    def word_count # => 関数名
+        frequencies = Hash.new(0) # => Key pairのHashを定義する
+        downcase.scan(/\w+/) {|word| frequencies[word] += 1 } 
+        # =>　この関数を使ったストリングを「小文字」に変換して正規表現の「\w+」でストリング内の「単語」を探し出す。
+        return frequencies # =>　結果の配列を返す
+    end
+end
+puts %{Dogs dogs dog dog Dogs.}.word_count
+# => {"dogs"=>3, "dog"=>2}
+puts %{"I have no shame," I said.}.word_count
+# => {"i"=>2, "have"=>1, "no"=>1, "shame"=>1, "said"=>1}
+end
+```
+もっと範例を見て練習をみましょう。こちらは、Stringの中にあたらしい「word_count_format(format)」の関数を用意しました。
+>カッコに代入するべき値は「正規表現の式」です。
+
+まずは、この関数を理解してみて、そして下記に記された4つの「正規表現」を利用してストリングを分解して結果を確認してみよう。
+```
+class String # => ストリングのメインClassは「String」です
+    def word_count_format(format) # => 関数名
+        frequencies = Hash.new(0) # => Key pairのHashを定義する
+        downcase.scan(format) {|word| frequencies[word] += 1 } 
+        # =>　この関数を使ったストリングを「小文字」に変換して正規表現の「\w+」でストリング内の「単語」を探し出す。
+        return frequencies # =>　結果の配列を返す
+    end
+    # => "aaa bbbcc".word_count_format(/\w+/)
+end
+# Just like /\w+/, but doesn't consider underscore part of a ward.
+# => Try use /[0-9A-Za-z]/
+
+# Anything that's not whitespace is a word.
+# => Try use /[^s]+/
+
+# Accept dashes and apostrophes as parts of words.
+# => Try use /[-'\w]+/
+
+# A pretty good heuristic for matching English words.
+# => Try use /(\w+([-'.]\w+)*)/
+```
+>/[0-9]/ 数字のみ
+>
+>/[a-z]/ 英語の小文字のみ
+>
+>/[A-Z]/ 英語の大文字のみ
+>
+>/(\w+([-'.]\w+)*)/ 文字の間に「-」、「'」、「.」が続けて記されている時単語として認識する意味。例：「aa-bb」、「I's」、「F.B.I」
+
+ここ最後の「/(\w+([-'.]\w+)*)/」で表示した結果につてい、このようなの単語「Work-in-progress」は認識ができますが、「--never--」の場合は認識ができなくなってしまった。
+
+そして、「Ph.D」や「 U.N.C.L.E.」なとの単語の認識もうまくできない状態が発生します。その原因は「E.F.F.」と「E.F.F」両方が存在する時、「E.F.F.」は単語として認識されるが、「E.F.F」が単語じゃないの誤認識の問題が存在している。
+
+解決方法は下記のようでコードを調整してみて下さい
+```
+class String
+    def word_count_format_final(format)
+        frequencies = Hash.new(0)
+        downcase.scan(format) {|word, ignore| frequencies[word] += 1 } 
+        # => 新たの「ignore」パラメータを追加して、そして無視する
+        
+        return frequencies
+    end
+end
+
+puts %{A pretty good heuristic for matching English words.}.word_count_format_final(/(\w+([-'.]\w+)*)/)
+puts '========'
+puts %{"That F.B.I fella--he's quite the man-about-town."}.word_count_format_final(/(\w+([-'.]\w+)*)/)
+```
+新しい「ignore」を追加すると本来ストリングを分解する時作成した配列の部分が綺麗に消えました！
