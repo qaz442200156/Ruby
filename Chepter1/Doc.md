@@ -686,4 +686,89 @@ puts %{A pretty good heuristic for matching English words.}.word_count_format_fi
 puts '========'
 puts %{"That F.B.I fella--he's quite the man-about-town."}.word_count_format_final(/(\w+([-'.]\w+)*)/)
 ```
-新しい「ignore」を追加すると本来ストリングを分解する時作成した配列の部分が綺麗に消えました！
+新しい「ignore」を追加すると本来ストリングを分解と共に作成した配列の中に要らないデータ部分が綺麗に消えました！
+
+## ストリングの大文字と小文字の変換
+RubyのストリングAPIに色々な大文字と小文字転換方法があります。今回は下記4つのAPIを紹介します。
+- [String#upcase](https://apidock.com/ruby/String/upcase) 
+- [String#downcase](https://apidock.com/ruby/String/downcase)　
+- [String#swapcase](https://apidock.com/ruby/String/swapcase)　
+- [String#capitalize](https://apidock.com/ruby/String/capitalize)
+
+下記の範例を見ましょう
+```
+string = 'HELLO, I am not here. I WENT to tHe MaRKET.'
+puts string.upcase
+# => HELLO, I AM NOT HERE. I WENT TO THE MARKET.
+puts string.downcase
+# => hello, i am not here. i went to the market.
+puts string.swapcase
+# => hello, i AM NOT HERE. i went TO ThE mArket.
+puts string.capitalize
+# => Hello, i am not here. i went to the market.
+```
+範例の結果を観察すると「String#upcase」、「String#downcase」は強制的にストリングを指定の「大文字」又は「小文字」に変換します。
+
+「String#swapcase」の処理はちょっと特別で、大文字と小文字直接逆転換の処理を行いました。
+> 逆転換：大文字が小文字に変換する、小文字が大文字に変換することを指す
+
+「String#capitalize」の処理はストリングの最初の一文字を大文字にして他の文字を強制的に小文字に変換する。でも、他の文字が強制的に小文字になるのがちょっと困る時は、「僕の関数」の出番だ！
+```
+class String
+    def capitalize_first_letter
+        self[0].chr.capitalize + self[1,size]
+    end
+    
+    def capitalize_first_letter!
+        unless self[0] == (c = self[0,1].upcase[0])
+        self[0] = c
+        self
+        end
+    end
+end
+
+s = 'i told Alice. She remembers now.'
+
+puts s.capitalize_first_letter
+# => I told Alice. She remembers now.
+puts s
+# => i told Alice. She remembers now.
+puts s.capitalize_first_letter!
+# => I told Alice. She remembers now.
+```
+>「！」の方法はまだ覚えていますか？　ストリングの変換をする時「！」を使うと、直接変数の変更ができます。そして、ストリングがとても長い場合「！」の方法を使うと「メモリ」の節約ができますよ！
+
+もし、特定のアルファベットを別のものに変更する場合、RubyのストリングAPIの中に、そのAPIが存在している。そのAPIは「[String#tr](https://apidock.com/ruby/String/tr)」です。
+```
+'LOWERCASE ALL VOWELS'.tr('AEIOU','aeiou')
+# => LoWeRCaSe aLL VoWeLS
+'Swap case of ALL VOWELS'.tr('AEIOUaeiou','aeiouAEIOU')
+# => SwAp cAsE Of aLL VoWeLS
+'A B C D E F G a b c d e f g'.tr('Ab','bA')
+
+# => A B C D E F G a b c d e f g   BEFORE
+# => | | | | | | | | | | | | | |
+# => b B C D E F G a A c d e f g   AFTER
+```
+「[String#tr](https://apidock.com/ruby/String/tr)」の運行ロジックは下記のように動いています。
+![String#tr](./Image/String_tr.jpg)
+### unless
+Ruby言語である「unless」は実際に「if else」と似ています。
+でも「unless」は逆の意味である。下記の範例を見ながら説明します。
+```
+if true #条件 == true
+# 条件 == true ここの処理をする
+else #
+# 条件 == false ここの処理をする
+end
+
+unless false #条件 == false
+# 条件 == false ここの処理をする
+end
+
+unless true #条件 == false
+# 条件 == false ここの処理をする
+else
+# 条件 == true ここの処理をする
+end
+```

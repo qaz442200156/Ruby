@@ -47,3 +47,13 @@
     - ストリングの処理「String」に自分の関数を追加する
     - ストリングの処理「自分の関数で単語を数える」
     - ストリングの処理「正規表現を使って単語を数える」
+- 2020/12/16
+  - 内容更新
+    - ストリングの処理 「String#upcase」
+    - ストリングの処理 「String#downcase」
+    - ストリングの処理 「String#swapcase」
+    - ストリングの処理 「String#capitalize」
+    - ストリングの処理 「String#tr」
+    - 判断式「if else」と「unless」
+    - ★実例フォルターを追加
+    - 実際にRubyでデータ処理の範例を追加　example_01.rb
