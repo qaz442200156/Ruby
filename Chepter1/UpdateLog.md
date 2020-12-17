@@ -57,3 +57,12 @@
     - 判断式「if else」と「unless」
     - ★実例フォルターを追加
     - 実際にRubyでデータ処理の範例を追加　example_01.rb
+- 2020/12/17
+  - 内容更新
+    - ストリングの空白の処理　「String#strip」
+    - ストリングの空白の処理　「String#lstrip」
+    - ストリングの空白の処理　「String#rstrip」
+    - ストリングの空白の処理　「String#center」
+    - ストリングの空白の処理　「String#ljust」
+    - ストリングの空白の処理　「String#rjust」
+    - ストリングの空白の処理　「String#gsub」

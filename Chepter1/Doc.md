@@ -632,6 +632,8 @@ puts %{"I have no shame," I said.}.word_count
 # => {"i"=>2, "have"=>1, "no"=>1, "shame"=>1, "said"=>1}
 end
 ```
+◆練習:stringworld_09.rb
+
 もっと範例を見て練習をみましょう。こちらは、Stringの中にあたらしい「word_count_format(format)」の関数を用意しました。
 >カッコに代入するべき値は「正規表現の式」です。
 
@@ -658,6 +660,7 @@ end
 # A pretty good heuristic for matching English words.
 # => Try use /(\w+([-'.]\w+)*)/
 ```
+◆練習:stringworld_09.rb
 >/[0-9]/ 数字のみ
 >
 >/[a-z]/ 英語の小文字のみ
@@ -686,6 +689,8 @@ puts %{A pretty good heuristic for matching English words.}.word_count_format_fi
 puts '========'
 puts %{"That F.B.I fella--he's quite the man-about-town."}.word_count_format_final(/(\w+([-'.]\w+)*)/)
 ```
+◆練習:stringworld_09.rb
+
 新しい「ignore」を追加すると本来ストリングを分解と共に作成した配列の中に要らないデータ部分が綺麗に消えました！
 
 ## ストリングの大文字と小文字の変換
@@ -707,6 +712,8 @@ puts string.swapcase
 puts string.capitalize
 # => Hello, i am not here. i went to the market.
 ```
+◆練習:stringworld_10.rb
+
 範例の結果を観察すると「String#upcase」、「String#downcase」は強制的にストリングを指定の「大文字」又は「小文字」に変換します。
 
 「String#swapcase」の処理はちょっと特別で、大文字と小文字直接逆転換の処理を行いました。
@@ -736,6 +743,8 @@ puts s
 puts s.capitalize_first_letter!
 # => I told Alice. She remembers now.
 ```
+◆練習:stringworld_10.rb
+
 >「！」の方法はまだ覚えていますか？　ストリングの変換をする時「！」を使うと、直接変数の変更ができます。そして、ストリングがとても長い場合「！」の方法を使うと「メモリ」の節約ができますよ！
 
 もし、特定のアルファベットを別のものに変更する場合、RubyのストリングAPIの中に、そのAPIが存在している。そのAPIは「[String#tr](https://apidock.com/ruby/String/tr)」です。
@@ -750,6 +759,8 @@ puts s.capitalize_first_letter!
 # => | | | | | | | | | | | | | |
 # => b B C D E F G a A c d e f g   AFTER
 ```
+◆練習:stringworld_10.rb
+
 「[String#tr](https://apidock.com/ruby/String/tr)」の運行ロジックは下記のように動いています。
 ![String#tr](./Image/String_tr.jpg)
 ### unless
@@ -772,3 +783,80 @@ else
 # 条件 == true ここの処理をする
 end
 ```
+◆練習:stringworld_10.rb
+
+## 空白を処理する
+資料や文章を処理する時、偶にストリングの中に空白が足りないとか、余計な空白が入っているとか、この状況があった時どうすれば良いかな？
+Ruby言語は幾つ空白の追加や消去や別の文字に書き換えるの方法が存在している。一緒に見てみましょう。
+- [String#strip](https://apidock.com/ruby/String/strip)
+- [String#lstrip](https://apidock.com/ruby/String/lstrip)
+- [String#rstrip](https://apidock.com/ruby/String/rstrip)
+- [String#center](https://apidock.com/ruby/String/center)
+- [String#ljuts](https://apidock.com/ruby/String/ljuts)
+- [String#rjust](https://apidock.com/ruby/String/rjust)
+
+「[String#strip](https://apidock.com/ruby/String/strip)」のAPIはストリング中に「先頭」と「後尾」にある空白の部分を全部取り除ける。
+
+[String#lstrip](https://apidock.com/ruby/String/lstrip)は「先頭側」にある空白を全部取り除来ます。
+[String#rstrip](https://apidock.com/ruby/String/rstrip)は「後尾側」にある空白を全部取り除来ます。
+```
+puts " \tWhitespace at beginning and end. \t\n\n"
+puts '======== strip ========'
+puts " \tWhitespace at beginning and end. \t\n\n".strip
+puts '======== lstrip ========'
+puts " \tWhitespace at beginning and end. \t\n\n".lstrip
+puts '======== rstrip ========'
+puts " \tWhitespace at beginning and end. \t\n\n".rstrip
+```
+◆練習:stringworld_11.rb
+
+「[String#center](https://apidock.com/ruby/String/center)」はストリングの真ん中に空白を追加することができますが、「[String#center](https://apidock.com/ruby/String/center)」は直接ストリングの左右に空白を追加じゃなくて、その追加の条件について説明をします。
+
+「[String#center](https://apidock.com/ruby/String/center)」を使う時に代入の値が要求されている。その「代入値1」の意味はこのストリング最後の「総サイズ」を指すことです。つまり、元のストリングサイズより短い場合は何もしません。もし、元より「総サイズが長い」場合は「第二の代入値」を利用して空いている部分を塡充します。隙間を塡充する時は右側が優先します。
+
+「[String#ljuts](https://apidock.com/ruby/String/ljuts)」と「[String#rjust](https://apidock.com/ruby/String/rjust)」はストリングの「先頭」と「後尾」の部分に空白を追加するのAPIです。
+```
+s = "Some String"
+p "original Size Of String :#{s.length}"
+# => "original Size Of String :11"
+
+for index in (10...16)
+    p "ForLoop[#{index}]:#{s.center(index,'-')}"
+end
+# => "ForLoop[10]:Some String"
+# => "ForLoop[11]:Some String"
+# => "ForLoop[12]:Some String-"
+# => "ForLoop[13]:-Some String-"
+# => "ForLoop[14]:-Some String--"
+# => "ForLoop[15]:--Some String--"
+
+p s.ljust(index)
+p s.rjust(index)
+```
+◆練習:stringworld_11.rb
+### String#gsub
+この前話した空白の処理について、続けて紹介したいのは普段複雑のデータを処理する時良く使っているのAPI「[String#gsub](https://apidock.com/ruby/String/gsub)」です。
+「[String#gsub](https://apidock.com/ruby/String/gsub)」は指定の文字を他の文字に書き換えることができます。そして、「正規表現」や「一部見えない文字」の処理もできるので、このAPIはとても便利で使い易いです。
+
+```
+# Transform Windows-style newline to Unix-style newline
+puts "Line one\n\rLine two\r".gsub("\n\r","\n")
+
+# Transform all runs of whitespace into a single space character
+puts "\n\rThis string\t\t\tuses\n all\tsorts\nof whitespacce.".gsub(/\s+/," ")
+
+```
+◆練習:stringworld_11.rb
+
+>空白の文字とは、「スペース」、「\t」、「\n」、「\r」、「\f」以上五つです。
+> 正規表現式にある「/\s/」は以上五つの空白を認識することができますが、全部種類の空白を認識できるでわないです。そして、「String#strip」も同じくこの五つの空白を認識することができるが、API元の処理ロジックはストリングの「先頭」と「後尾」にある以上の五つ種類の空白を全て消去することです。
+> 
+> 普段あんまり出てないの空白は二つがあります「\b」と「\v」は正規表現の「/\s/」が認識できないので、その特別な時があったらこの「「/[\s\b\v]/」」正規表現を使ってみて下さい。
+```
+puts '======== String \\b \\v \\n ========'
+s = " \bIt's whitespace, Jim,\vbut not as we know it.\n"
+puts s
+puts '======== String#gsub with /[\s\b\v]+/ ========'
+puts s.gsub(/[\s\b\v]+/," ")
+```
+◆練習:stringworld_11.rb
